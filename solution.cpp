@@ -1,11 +1,17 @@
 int parseQuantity(const char* str) {
-    int maxInt = 2'147'483'647;
-    if (sizeof(int) == 2) {
-        maxInt = 32'767;
-    }
-    if (sizeof(int) == 8) {
-        maxInt = 9'223'372'036'854'775'807;
-    }
+    constexpr int maxInt = []() -> int {   
+        switch (sizeof(int)) {
+            case 2:
+                return 32'767;
+            case 4:
+                return 2'147'483'647;
+            case 8:
+                return 9'223'372'036'854'775'807;
+            default:
+                return 2'147'483'647;
+        }
+    }();
+
 
     int result = 0;
     for (int i = 0;; i++) {
